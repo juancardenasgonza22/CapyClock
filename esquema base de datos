@@ -1,0 +1,526 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 22-04-2025 a las 01:44:01
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `bdcapyclock`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `categoria`
+--
+
+CREATE TABLE `categoria` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `color` varchar(20) DEFAULT '#CCCCCC',
+  `icono` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `categoria`
+--
+
+INSERT INTO `categoria` (`id`, `usuario_id`, `nombre`, `color`, `icono`) VALUES
+(1, 2, 'Trabajo', '#FF0000', 'briefcase'),
+(2, 2, 'Personal', '#00FF00', 'user'),
+(3, 2, 'Estudio', '#0000FF', 'book'),
+(4, 3, 'Proyectos', '#FF00FF', 'code'),
+(5, 3, 'Hogar', '#FFFF00', 'home');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estadistica`
+--
+
+CREATE TABLE `estadistica` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `tareas_completadas` int(11) DEFAULT 0,
+  `tareas_pendientes` int(11) DEFAULT 0,
+  `tiempo_total_minutos` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `estadistica`
+--
+
+INSERT INTO `estadistica` (`id`, `usuario_id`, `fecha`, `tareas_completadas`, `tareas_pendientes`, `tiempo_total_minutos`) VALUES
+(1, 2, '2025-03-19', 3, 2, 180),
+(2, 2, '2025-03-20', 4, 1, 210),
+(3, 2, '2025-03-21', 2, 3, 120),
+(4, 3, '2025-03-18', 2, 4, 150),
+(5, 3, '2025-03-19', 3, 3, 180),
+(6, 3, '2025-03-20', 5, 1, 240);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `logro`
+--
+
+CREATE TABLE `logro` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `icono` varchar(255) DEFAULT NULL,
+  `puntos_requeridos` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `logro`
+--
+
+INSERT INTO `logro` (`id`, `nombre`, `descripcion`, `icono`, `puntos_requeridos`) VALUES
+(1, 'Principiante', 'Completar 5 tareas', 'star-bronze', 50),
+(2, 'Intermedio', 'Completar 25 tareas', 'star-silver', 250),
+(3, 'Experto', 'Completar 100 tareas', 'star-gold', 1000),
+(4, 'Madrugador', 'Completar 10 tareas antes de las 9 AM', 'sun', 100),
+(5, 'Constante', 'Usar la aplicación 7 días seguidos', 'calendar-check', 70);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `notificacion`
+--
+
+CREATE TABLE `notificacion` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `tarea_id` int(11) DEFAULT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `mensaje` text DEFAULT NULL,
+  `fecha_envio` datetime NOT NULL,
+  `leida` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `notificacion`
+--
+
+INSERT INTO `notificacion` (`id`, `usuario_id`, `tarea_id`, `titulo`, `mensaje`, `fecha_envio`, `leida`) VALUES
+(1, 2, 1, 'Recordatorio de reunión', 'Tu reunión de equipo comienza en 30 minutos', '2025-03-21 12:59:52', 1),
+(2, 2, 3, 'No olvides estudiar', 'Tienes una sesión de estudio programada para mañana', '2025-03-21 15:59:52', 0),
+(3, 3, 4, 'Proyecto pendiente', 'No olvides trabajar en el desarrollo de la app', '2025-03-21 16:59:52', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `puntos_productividad`
+--
+
+CREATE TABLE `puntos_productividad` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `puntos` int(11) DEFAULT 0,
+  `tipo_actividad` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `puntos_productividad`
+--
+
+INSERT INTO `puntos_productividad` (`id`, `usuario_id`, `fecha`, `puntos`, `tipo_actividad`) VALUES
+(1, 2, '2025-03-19', 30, 'Completar tareas'),
+(2, 2, '2025-03-20', 40, 'Completar tareas'),
+(3, 2, '2025-03-21', 20, 'Completar tareas'),
+(4, 3, '2025-03-18', 20, 'Completar tareas'),
+(5, 3, '2025-03-19', 30, 'Completar tareas'),
+(6, 3, '2025-03-20', 50, 'Completar tareas');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `recurrencia`
+--
+
+CREATE TABLE `recurrencia` (
+  `id` int(11) NOT NULL,
+  `tipo` enum('diaria','semanal','mensual','anual') NOT NULL,
+  `configuracion` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `recurrencia`
+--
+
+INSERT INTO `recurrencia` (`id`, `tipo`, `configuracion`) VALUES
+(1, 'diaria', NULL),
+(2, 'semanal', '{\"dias\": [1, 3, 5]}'),
+(3, 'mensual', '{\"dia\": 15}'),
+(4, 'anual', '{\"mes\": 1, \"dia\": 1}');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rol`
+--
+
+CREATE TABLE `rol` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `rol`
+--
+
+INSERT INTO `rol` (`id`, `nombre`) VALUES
+(1, 'usuario'),
+(2, 'administrador');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `sesion`
+--
+
+CREATE TABLE `sesion` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `inicio` datetime NOT NULL,
+  `fin` datetime DEFAULT NULL,
+  `dispositivo` varchar(255) DEFAULT NULL,
+  `ip` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tarea`
+--
+
+CREATE TABLE `tarea` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `categoria_id` int(11) DEFAULT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `hora_inicio` time DEFAULT NULL,
+  `hora_fin` time DEFAULT NULL,
+  `prioridad` enum('baja','media','alta') DEFAULT 'media',
+  `completada` tinyint(1) DEFAULT 0,
+  `recurrencia_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tarea`
+--
+
+INSERT INTO `tarea` (`id`, `usuario_id`, `categoria_id`, `titulo`, `descripcion`, `fecha_inicio`, `fecha_fin`, `hora_inicio`, `hora_fin`, `prioridad`, `completada`, `recurrencia_id`) VALUES
+(1, 2, 1, 'Reunión de equipo', 'Discutir avances del proyecto', '2025-03-21', '2025-03-21', '09:00:00', '10:00:00', 'alta', 0, 2),
+(2, 2, 2, 'Comprar víveres', 'Ir al supermercado', '2025-03-21', '2025-03-21', '18:00:00', '19:00:00', 'media', 0, NULL),
+(3, 2, 3, 'Estudiar SQL', 'Repasar comandos básicos', '2025-03-22', '2025-03-22', '16:00:00', '18:00:00', 'media', 0, 1),
+(4, 3, 4, 'Desarrollar app', 'Trabajar en el frontend', '2025-03-21', '2025-03-26', '10:00:00', '13:00:00', 'alta', 0, NULL),
+(5, 3, 5, 'Limpiar casa', 'Aspirar y ordenar', '2025-03-23', '2025-03-23', '15:00:00', '17:00:00', 'baja', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `contrasena` varchar(255) NOT NULL,
+  `fecha_registro` date NOT NULL,
+  `avatar_url` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `nombre`, `email`, `contrasena`, `fecha_registro`, `avatar_url`) VALUES
+(1, 'Admin Usuario', 'admin@example.com', '$2a$10$xJhR9S8x7r5tY4hq1qm3mufvuGM.iLoXTBgJ6rSsOhvS.U48yQhOm', '2025-03-21', NULL),
+(2, 'María López', 'maria@example.com', '$2a$10$Aehwx3AHXKg4wXiO5BqvKOW4tqkEgGzNd.u9Qu19AVnRm9YRvN.HC', '2025-03-21', NULL),
+(3, 'Juan Pérez', 'juan@example.com', '$2a$10$2VU9cJy.Rvp0IY3qLIZPWO1dLZwRjO3EEm0q3XaPZKRNzIwG2eULW', '2025-03-21', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario_logro`
+--
+
+CREATE TABLE `usuario_logro` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `logro_id` int(11) NOT NULL,
+  `fecha_obtencion` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario_logro`
+--
+
+INSERT INTO `usuario_logro` (`id`, `usuario_id`, `logro_id`, `fecha_obtencion`) VALUES
+(1, 2, 1, '2025-03-11'),
+(2, 3, 1, '2025-03-06'),
+(3, 2, 4, '2025-03-16');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario_rol`
+--
+
+CREATE TABLE `usuario_rol` (
+  `usuario_id` int(11) NOT NULL,
+  `rol_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario_rol`
+--
+
+INSERT INTO `usuario_rol` (`usuario_id`, `rol_id`) VALUES
+(1, 2),
+(2, 1),
+(3, 1);
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `categoria`
+--
+ALTER TABLE `categoria`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario_id` (`usuario_id`);
+
+--
+-- Indices de la tabla `estadistica`
+--
+ALTER TABLE `estadistica`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_estadistica_usuario_fecha` (`usuario_id`,`fecha`);
+
+--
+-- Indices de la tabla `logro`
+--
+ALTER TABLE `logro`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `notificacion`
+--
+ALTER TABLE `notificacion`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario_id` (`usuario_id`),
+  ADD KEY `tarea_id` (`tarea_id`);
+
+--
+-- Indices de la tabla `puntos_productividad`
+--
+ALTER TABLE `puntos_productividad`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_puntos_usuario_fecha` (`usuario_id`,`fecha`);
+
+--
+-- Indices de la tabla `recurrencia`
+--
+ALTER TABLE `recurrencia`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `rol`
+--
+ALTER TABLE `rol`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `sesion`
+--
+ALTER TABLE `sesion`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario_id` (`usuario_id`);
+
+--
+-- Indices de la tabla `tarea`
+--
+ALTER TABLE `tarea`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `categoria_id` (`categoria_id`),
+  ADD KEY `recurrencia_id` (`recurrencia_id`),
+  ADD KEY `idx_tarea_usuario` (`usuario_id`),
+  ADD KEY `idx_tarea_fecha` (`fecha_inicio`,`fecha_fin`);
+
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indices de la tabla `usuario_logro`
+--
+ALTER TABLE `usuario_logro`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `usuario_logro_unique` (`usuario_id`,`logro_id`),
+  ADD KEY `logro_id` (`logro_id`);
+
+--
+-- Indices de la tabla `usuario_rol`
+--
+ALTER TABLE `usuario_rol`
+  ADD PRIMARY KEY (`usuario_id`,`rol_id`),
+  ADD KEY `rol_id` (`rol_id`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `categoria`
+--
+ALTER TABLE `categoria`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `estadistica`
+--
+ALTER TABLE `estadistica`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `logro`
+--
+ALTER TABLE `logro`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `notificacion`
+--
+ALTER TABLE `notificacion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `puntos_productividad`
+--
+ALTER TABLE `puntos_productividad`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `recurrencia`
+--
+ALTER TABLE `recurrencia`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `rol`
+--
+ALTER TABLE `rol`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `sesion`
+--
+ALTER TABLE `sesion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `tarea`
+--
+ALTER TABLE `tarea`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario_logro`
+--
+ALTER TABLE `usuario_logro`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `categoria`
+--
+ALTER TABLE `categoria`
+  ADD CONSTRAINT `categoria_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `estadistica`
+--
+ALTER TABLE `estadistica`
+  ADD CONSTRAINT `estadistica_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `notificacion`
+--
+ALTER TABLE `notificacion`
+  ADD CONSTRAINT `notificacion_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `notificacion_ibfk_2` FOREIGN KEY (`tarea_id`) REFERENCES `tarea` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `puntos_productividad`
+--
+ALTER TABLE `puntos_productividad`
+  ADD CONSTRAINT `puntos_productividad_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `sesion`
+--
+ALTER TABLE `sesion`
+  ADD CONSTRAINT `sesion_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `tarea`
+--
+ALTER TABLE `tarea`
+  ADD CONSTRAINT `tarea_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `tarea_ibfk_2` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `tarea_ibfk_3` FOREIGN KEY (`recurrencia_id`) REFERENCES `recurrencia` (`id`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `usuario_logro`
+--
+ALTER TABLE `usuario_logro`
+  ADD CONSTRAINT `usuario_logro_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `usuario_logro_ibfk_2` FOREIGN KEY (`logro_id`) REFERENCES `logro` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `usuario_rol`
+--
+ALTER TABLE `usuario_rol`
+  ADD CONSTRAINT `usuario_rol_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `usuario_rol_ibfk_2` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
